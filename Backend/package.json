@@ -1,18 +1,33 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "main": "index.js",
+  "type": "module",
+  "description": "API de gestion des congés avec Node.js, Express et PostgreSQL",
+  "main": "src/main.js",
   "scripts": {
+    "start": "node src/main.js",
+    "dev": "nodemon src/main.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "api",
+    "rest",
+    "nodejs",
+    "express",
+    "postgresql",
+    "conges"
+  ],
+  "author": "Stagiaire",
   "license": "ISC",
-  "description": "",
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "body-parser": "^2.2.2",
+    "cors": "^2.8.6",
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
     "pg": "^8.18.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
   }
 }
