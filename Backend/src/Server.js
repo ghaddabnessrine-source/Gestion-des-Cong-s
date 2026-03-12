@@ -5,6 +5,7 @@ import congeRoutes from "./routes/congeRoutes.js";
 import typeCongeRoutes from "./routes/typeCongeRoutes.js";
 import roleRoutes from "./routes/roleRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
+import authRoutes from "./routes/auth.js";
 
 const app = express();
 
@@ -14,6 +15,7 @@ app.use("/conges", congeRoutes);
 app.use("/type-conges", typeCongeRoutes);
 app.use("/roles", roleRoutes);
 app.use("/users", userRoutes);
+app.use("/auth", authRoutes);
 
 app.get("/health", (req, res) => {
   res.json({ status: "OK" });
