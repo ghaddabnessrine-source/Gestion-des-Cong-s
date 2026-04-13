@@ -1,5 +1,6 @@
 import "dotenv/config";
 import express from "express";
+import cors from "cors";
 
 import congeRoutes from "./routes/congeRoutes.js";
 import typeCongeRoutes from "./routes/typeCongeRoutes.js";
@@ -7,7 +8,10 @@ import roleRoutes from "./routes/roleRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import authRoutes from "./routes/auth.js";
 
+
 const app = express();
+
+app.use(cors()); 
 
 app.use(express.json());
 

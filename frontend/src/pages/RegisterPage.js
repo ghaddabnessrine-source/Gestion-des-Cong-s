@@ -15,6 +15,28 @@ function RegisterPage() {
   const [message, setMessage] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState({});
+
+  function validateForm() {
+    const newErrors = {};
+    if (!formData.email) {
+      newErrors.email = "Email est requis";
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = "Email invalide";
+    }
+    if (!formData.mot_de_passe) {
+      newErrors.mot_de_passe = "Mot de passe est requis";
+    } else if (formData.mot_de_passe.length < 6) {
+      newErrors.mot_de_passe = "Mot de passe doit contenir au moins 6 caractères";
+    }
+    if (!formData.confirmPassword) {
+      newErrors.confirmPassword = "Confirmation du mot de passe est requise";
+    } else if (formData.mot_de_passe !== formData.confirmPassword) {
+      newErrors.confirmPassword = "Les mots de passe ne correspondent pas";
+    }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  }
 
   function handleChange(e) {
     setFormData({
@@ -27,9 +49,9 @@ function RegisterPage() {
     e.preventDefault();
     setMessage("");
     setSuccess("");
+    setErrors({});
 
-    if (formData.mot_de_passe !== formData.confirmPassword) {
-      setMessage("Les mots de passe ne correspondent pas");
+    if (!validateForm()) {
       return;
     }
 
@@ -71,6 +93,7 @@ function RegisterPage() {
                 onChange={handleChange}
                 required
               />
+              {errors.email && <div className="text-danger">{errors.email}</div>}
             </div>
 
             <div className="mb-3">
@@ -83,6 +106,7 @@ function RegisterPage() {
                 onChange={handleChange}
                 required
               />
+              {errors.mot_de_passe && <div className="text-danger">{errors.mot_de_passe}</div>}
             </div>
 
             <div className="mb-3">
@@ -95,6 +119,7 @@ function RegisterPage() {
                 onChange={handleChange}
                 required
               />
+              {errors.confirmPassword && <div className="text-danger">{errors.confirmPassword}</div>}
             </div>
 
             <div className="mb-3">

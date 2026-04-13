@@ -13,6 +13,23 @@ function LoginPage() {
 
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState({});
+
+  function validateForm() {
+    const newErrors = {};
+    if (!formData.email) {
+      newErrors.email = "Email est requis";
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = "Email invalide";
+    }
+    if (!formData.mot_de_passe) {
+      newErrors.mot_de_passe = "Mot de passe est requis";
+    } else if (formData.mot_de_passe.length < 6) {
+      newErrors.mot_de_passe = "Mot de passe doit contenir au moins 6 caractères";
+    }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  }
 
   function handleChange(e) {
     setFormData({
@@ -24,6 +41,12 @@ function LoginPage() {
   async function handleSubmit(e) {
     e.preventDefault();
     setMessage("");
+    setErrors({});
+
+    if (!validateForm()) {
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -67,6 +90,7 @@ function LoginPage() {
                 onChange={handleChange}
                 required
               />
+              {errors.email && <div className="text-danger">{errors.email}</div>}
             </div>
 
             <div className="mb-3">
@@ -79,6 +103,7 @@ function LoginPage() {
                 onChange={handleChange}
                 required
               />
+              {errors.mot_de_passe && <div className="text-danger">{errors.mot_de_passe}</div>}
             </div>
 
             <div className="mb-3">

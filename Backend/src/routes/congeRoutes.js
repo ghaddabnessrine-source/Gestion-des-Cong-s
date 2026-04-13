@@ -6,15 +6,22 @@ const router = express.Router();
 // Create a new Conge
 router.post('/conge', async (req, res) => {
   try {
-    const { id, id_demandeur, type_conge_id, date_debut, date_fin, statut, motif, commentaire_refus } = req.body;
+    const { id, id_demandeur, type_conge_id, date_debut, date_fin, statut } = req.body;
     
     const query = `
-      INSERT INTO "Conge" (id, id_demandeur, type_conge_id, date_debut, date_fin, statut, motif, commentaire_refus)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+      INSERT INTO "Conge" (id, id_demandeur, type_conge_id, date_debut, date_fin, statut)
+      VALUES ($1, $2, $3, $4, $5, $6)
       RETURNING *;
     `;
     
-    const result = await pool.query(query, [id, id_demandeur, type_conge_id, date_debut, date_fin, statut || 'en_attente', motif, commentaire_refus]);
+    const result = await pool.query(query, [
+      id,
+      id_demandeur,
+      type_conge_id,
+      date_debut,
+      date_fin,
+      statut || 'en_attente',
+    ]);
     res.status(200).json(result.rows[0]);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -47,21 +54,25 @@ router.get('/conge/:id', async (req, res) => {
 // Update Conge
 router.put('/conge/:id', async (req, res) => {
   try {
-    const { type_conge_id, date_debut, date_fin, statut, motif, commentaire_refus } = req.body;
+    const { type_conge_id, date_debut, date_fin, statut } = req.body;
     
     const query = `
       UPDATE "Conge" 
       SET type_conge_id = COALESCE($1, type_conge_id),
           date_debut = COALESCE($2, date_debut),
           date_fin = COALESCE($3, date_fin),
-          statut = COALESCE($4, statut),
-          motif = COALESCE($5, motif),
-          commentaire_refus = COALESCE($6, commentaire_refus)
-      WHERE id = $7
+          statut = COALESCE($4, statut)
+      WHERE id = $5
       RETURNING *;
     `;
     
-    const result = await pool.query(query, [type_conge_id, date_debut, date_fin, statut, motif, commentaire_refus, req.params.id]);
+    const result = await pool.query(query, [
+      type_conge_id,
+      date_debut,
+      date_fin,
+      statut,
+      req.params.id,
+    ]);
     
     if (result.rows.length === 0) {
       return res.status(404).json({ message: 'Conge not found' });
